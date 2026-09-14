@@ -60,12 +60,12 @@ class backup_phrasewall_activity_task extends backup_activity_task {
         $base = preg_quote($CFG->wwwroot, '#');
         $content = preg_replace(
             "#{$base}/mod/phrasewall/index.php\?id=([0-9]+)#",
-            '$@FEEDBACKWALLINDEX*$1@$',
+            '$@PHRASEWALLINDEX*$1@$',
             $content
         );
         return preg_replace(
             "#{$base}/mod/phrasewall/view.php\?id=([0-9]+)#",
-            '$@FEEDBACKWALLVIEWBYID*$1@$',
+            '$@PHRASEWALLVIEWBYID*$1@$',
             $content
         );
     }

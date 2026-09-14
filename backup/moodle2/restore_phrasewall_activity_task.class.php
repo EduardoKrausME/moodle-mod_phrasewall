@@ -60,8 +60,8 @@ class restore_phrasewall_activity_task extends restore_activity_task {
      */
     public static function define_decode_rules() {
         return [
-            new restore_decode_rule('FEEDBACKWALLVIEWBYID', '/mod/phrasewall/view.php?id=$1', 'course_module'),
-            new restore_decode_rule('FEEDBACKWALLINDEX', '/mod/phrasewall/index.php?id=$1', 'course'),
+            new restore_decode_rule('PHRASEWALLVIEWBYID', '/mod/phrasewall/view.php?id=$1', 'course_module'),
+            new restore_decode_rule('PHRASEWALLINDEX', '/mod/phrasewall/index.php?id=$1', 'course'),
         ];
     }
 }
