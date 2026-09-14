@@ -17,19 +17,19 @@
 /**
  * Backup task for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/feedbackwall/backup/moodle2/backup_feedbackwall_stepslib.php');
+require_once($CFG->dirroot . '/mod/phrasewall/backup/moodle2/backup_phrasewall_stepslib.php');
 
 /**
  * Defines the backup task.
  */
-class backup_feedbackwall_activity_task extends backup_activity_task {
+class backup_phrasewall_activity_task extends backup_activity_task {
 
     /**
      * No module-specific settings are required.
@@ -45,7 +45,7 @@ class backup_feedbackwall_activity_task extends backup_activity_task {
      * @return void
      */
     protected function define_my_steps() {
-        $this->add_step(new backup_feedbackwall_activity_structure_step('feedbackwall_structure', 'feedbackwall.xml'));
+        $this->add_step(new backup_phrasewall_activity_structure_step('phrasewall_structure', 'phrasewall.xml'));
     }
 
     /**
@@ -59,12 +59,12 @@ class backup_feedbackwall_activity_task extends backup_activity_task {
 
         $base = preg_quote($CFG->wwwroot, '#');
         $content = preg_replace(
-            "#{$base}/mod/feedbackwall/index.php\?id=([0-9]+)#",
+            "#{$base}/mod/phrasewall/index.php\?id=([0-9]+)#",
             '$@FEEDBACKWALLINDEX*$1@$',
             $content
         );
         return preg_replace(
-            "#{$base}/mod/feedbackwall/view.php\?id=([0-9]+)#",
+            "#{$base}/mod/phrasewall/view.php\?id=([0-9]+)#",
             '$@FEEDBACKWALLVIEWBYID*$1@$',
             $content
         );

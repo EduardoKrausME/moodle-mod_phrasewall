@@ -1,4 +1,4 @@
-# mod_feedbackwall - Mural de uma frase
+# mod_phrasewall - Mural de uma frase
 
 Atividade Moodle extremamente simples para coletar uma frase curta de cada estudante e exibi-la em um mural visual.
 
@@ -21,4 +21,4 @@ Moodle 4.5 ou superior.
 
 ## Instalação
 
-Copie a pasta `feedbackwall` para `mod/feedbackwall` e conclua a atualização administrativa do Moodle.
+Copie a pasta `phrasewall` para `mod/phrasewall` e conclua a atualização administrativa do Moodle.

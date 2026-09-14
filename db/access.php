@@ -17,7 +17,7 @@
 /**
  * Capability definitions for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-    'mod/feedbackwall:addinstance' => [
+    'mod/phrasewall:addinstance' => [
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -35,7 +35,7 @@ $capabilities = [
         ],
         'clonepermissionsfrom' => 'moodle/course:manageactivities',
     ],
-    'mod/feedbackwall:view' => [
+    'mod/phrasewall:view' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => [
@@ -45,14 +45,14 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
-    'mod/feedbackwall:submit' => [
+    'mod/phrasewall:submit' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => [
             'student' => CAP_ALLOW,
         ],
     ],
-    'mod/feedbackwall:viewreport' => [
+    'mod/phrasewall:viewreport' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => [
@@ -60,7 +60,7 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
-    'mod/feedbackwall:manageposts' => [
+    'mod/phrasewall:manageposts' => [
         'riskbitmask' => RISK_DATALOSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,

@@ -17,7 +17,7 @@
 /**
  * Public callbacks for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,7 +28,7 @@
  * @param string $feature Feature constant.
  * @return mixed
  */
-function feedbackwall_supports($feature) {
+function phrasewall_supports($feature) {
     return match ($feature) {
         FEATURE_MOD_INTRO => true,
         FEATURE_SHOW_DESCRIPTION => true,
@@ -42,36 +42,36 @@ function feedbackwall_supports($feature) {
 /**
  * Creates an activity instance.
  *
- * @param stdClass $feedbackwall Form data.
- * @param mod_feedbackwall_mod_form|null $mform Form instance.
+ * @param stdClass $phrasewall Form data.
+ * @param mod_phrasewall_mod_form|null $mform Form instance.
  * @return int New instance ID.
  */
-function feedbackwall_add_instance($feedbackwall, $mform = null) {
+function phrasewall_add_instance($phrasewall, $mform = null) {
     global $DB;
 
     $now = time();
-    $feedbackwall->timecreated = $now;
-    $feedbackwall->timemodified = $now;
-    $feedbackwall->completionsubmit = empty($feedbackwall->completionsubmit) ? 0 : 1;
+    $phrasewall->timecreated = $now;
+    $phrasewall->timemodified = $now;
+    $phrasewall->completionsubmit = empty($phrasewall->completionsubmit) ? 0 : 1;
 
-    return $DB->insert_record('feedbackwall', $feedbackwall);
+    return $DB->insert_record('phrasewall', $phrasewall);
 }
 
 /**
  * Updates an activity instance.
  *
- * @param stdClass $feedbackwall Form data.
- * @param mod_feedbackwall_mod_form|null $mform Form instance.
+ * @param stdClass $phrasewall Form data.
+ * @param mod_phrasewall_mod_form|null $mform Form instance.
  * @return bool
  */
-function feedbackwall_update_instance($feedbackwall, $mform = null) {
+function phrasewall_update_instance($phrasewall, $mform = null) {
     global $DB;
 
-    $feedbackwall->id = $feedbackwall->instance;
-    $feedbackwall->timemodified = time();
-    $feedbackwall->completionsubmit = empty($feedbackwall->completionsubmit) ? 0 : 1;
+    $phrasewall->id = $phrasewall->instance;
+    $phrasewall->timemodified = time();
+    $phrasewall->completionsubmit = empty($phrasewall->completionsubmit) ? 0 : 1;
 
-    return $DB->update_record('feedbackwall', $feedbackwall);
+    return $DB->update_record('phrasewall', $phrasewall);
 }
 
 /**
@@ -80,15 +80,15 @@ function feedbackwall_update_instance($feedbackwall, $mform = null) {
  * @param int $id Instance ID.
  * @return bool
  */
-function feedbackwall_delete_instance($id) {
+function phrasewall_delete_instance($id) {
     global $DB;
 
-    if (!$DB->record_exists('feedbackwall', ['id' => $id])) {
+    if (!$DB->record_exists('phrasewall', ['id' => $id])) {
         return false;
     }
 
-    $DB->delete_records('feedbackwall_posts', ['feedbackwallid' => $id]);
-    $DB->delete_records('feedbackwall', ['id' => $id]);
+    $DB->delete_records('phrasewall_posts', ['phrasewallid' => $id]);
+    $DB->delete_records('phrasewall', ['id' => $id]);
 
     return true;
 }
@@ -99,27 +99,27 @@ function feedbackwall_delete_instance($id) {
  * @param stdClass $coursemodule Course module record.
  * @return cached_cm_info|false
  */
-function feedbackwall_get_coursemodule_info($coursemodule) {
+function phrasewall_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    $feedbackwall = $DB->get_record(
-        'feedbackwall',
+    $phrasewall = $DB->get_record(
+        'phrasewall',
         ['id' => $coursemodule->instance],
         'id,name,intro,introformat,completionsubmit'
     );
-    if (!$feedbackwall) {
+    if (!$phrasewall) {
         return false;
     }
 
     $result = new cached_cm_info();
-    $result->name = $feedbackwall->name;
+    $result->name = $phrasewall->name;
 
     if ($coursemodule->showdescription) {
-        $result->content = format_module_intro('feedbackwall', $feedbackwall, $coursemodule->id, false);
+        $result->content = format_module_intro('phrasewall', $phrasewall, $coursemodule->id, false);
     }
 
     if ($coursemodule->completion == COMPLETION_TRACKING_AUTOMATIC) {
-        $result->customdata['customcompletionrules']['completionsubmit'] = $feedbackwall->completionsubmit;
+        $result->customdata['customcompletionrules']['completionsubmit'] = $phrasewall->completionsubmit;
     }
 
     return $result;
@@ -131,14 +131,14 @@ function feedbackwall_get_coursemodule_info($coursemodule) {
  * @param cm_info|stdClass $cm Course module info.
  * @return array
  */
-function feedbackwall_get_completion_active_rule_descriptions($cm) {
+function phrasewall_get_completion_active_rule_descriptions($cm) {
     if (empty($cm->customdata['customcompletionrules']) || $cm->completion != COMPLETION_TRACKING_AUTOMATIC) {
         return [];
     }
 
     $descriptions = [];
     if (!empty($cm->customdata['customcompletionrules']['completionsubmit'])) {
-        $descriptions[] = get_string('completionsubmit', 'feedbackwall');
+        $descriptions[] = get_string('completionsubmit', 'phrasewall');
     }
 
     return $descriptions;
@@ -151,12 +151,12 @@ function feedbackwall_get_completion_active_rule_descriptions($cm) {
  * @param navigation_node $navref Module node.
  * @return void
  */
-function feedbackwall_extend_settings_navigation(settings_navigation $settings, navigation_node $navref) {
+function phrasewall_extend_settings_navigation(settings_navigation $settings, navigation_node $navref) {
     $cm = $settings->get_page()->cm;
-    if (!$cm || !has_capability('mod/feedbackwall:viewreport', $cm->context)) {
+    if (!$cm || !has_capability('mod/phrasewall:viewreport', $cm->context)) {
         return;
     }
 
-    $url = new moodle_url('/mod/feedbackwall/report.php', ['id' => $cm->id]);
-    $navref->add(get_string('report', 'feedbackwall'), $url, navigation_node::TYPE_SETTING);
+    $url = new moodle_url('/mod/phrasewall/report.php', ['id' => $cm->id]);
+    $navref->add(get_string('report', 'phrasewall'), $url, navigation_node::TYPE_SETTING);
 }

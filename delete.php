@@ -17,7 +17,7 @@
 /**
  * Deletes a post from Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,38 +28,38 @@ $id = required_param('id', PARAM_INT);
 $postid = required_param('postid', PARAM_INT);
 $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
-$cm = get_coursemodule_from_id('feedbackwall', $id, 0, false, MUST_EXIST);
+$cm = get_coursemodule_from_id('phrasewall', $id, 0, false, MUST_EXIST);
 $course = get_course($cm->course);
-$feedbackwall = $DB->get_record('feedbackwall', ['id' => $cm->instance], '*', MUST_EXIST);
+$phrasewall = $DB->get_record('phrasewall', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-require_capability('mod/feedbackwall:manageposts', $context);
+require_capability('mod/phrasewall:manageposts', $context);
 
-$post = $DB->get_record('feedbackwall_posts', [
+$post = $DB->get_record('phrasewall_posts', [
     'id' => $postid,
-    'feedbackwallid' => $feedbackwall->id,
+    'phrasewallid' => $phrasewall->id,
 ], '*', MUST_EXIST);
 
-$reporturl = new moodle_url('/mod/feedbackwall/report.php', ['id' => $cm->id]);
+$reporturl = new moodle_url('/mod/phrasewall/report.php', ['id' => $cm->id]);
 
 if ($confirm) {
     require_sesskey();
-    $manager = new \mod_feedbackwall\manager($feedbackwall, $cm, $course, $context);
+    $manager = new \mod_phrasewall\manager($phrasewall, $cm, $course, $context);
     $manager->delete_post($post->id);
     redirect(
         $reporturl,
-        get_string('postdeleted', 'feedbackwall'),
+        get_string('postdeleted', 'phrasewall'),
         null,
         \core\output\notification::NOTIFY_SUCCESS
     );
 }
 
-$PAGE->set_url('/mod/feedbackwall/delete.php', ['id' => $cm->id, 'postid' => $post->id]);
-$PAGE->set_title(get_string('delete', 'feedbackwall'));
+$PAGE->set_url('/mod/phrasewall/delete.php', ['id' => $cm->id, 'postid' => $post->id]);
+$PAGE->set_title(get_string('delete', 'phrasewall'));
 $PAGE->set_heading(format_string($course->fullname));
 
-$yesurl = new moodle_url('/mod/feedbackwall/delete.php', [
+$yesurl = new moodle_url('/mod/phrasewall/delete.php', [
     'id' => $cm->id,
     'postid' => $post->id,
     'confirm' => 1,
@@ -67,6 +67,6 @@ $yesurl = new moodle_url('/mod/feedbackwall/delete.php', [
 ]);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('delete', 'feedbackwall'));
-echo $OUTPUT->confirm(get_string('deleteconfirm', 'feedbackwall'), $yesurl, $reporturl);
+echo $OUTPUT->heading(get_string('delete', 'phrasewall'));
+echo $OUTPUT->confirm(get_string('deleteconfirm', 'phrasewall'), $yesurl, $reporturl);
 echo $OUTPUT->footer();

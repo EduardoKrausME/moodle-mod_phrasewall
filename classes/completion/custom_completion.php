@@ -17,12 +17,12 @@
 /**
  * Custom completion rules for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall\completion;
+namespace mod_phrasewall\completion;
 
 use core_completion\activity_custom_completion;
 
@@ -46,8 +46,8 @@ class custom_completion extends activity_custom_completion {
             return COMPLETION_UNKNOWN;
         }
 
-        $submitted = $DB->record_exists('feedbackwall_posts', [
-            'feedbackwallid' => $this->cm->instance,
+        $submitted = $DB->record_exists('phrasewall_posts', [
+            'phrasewallid' => $this->cm->instance,
             'userid' => $this->userid,
         ]);
 
@@ -69,7 +69,7 @@ class custom_completion extends activity_custom_completion {
      * @return array
      */
     public function get_custom_rule_descriptions(): array {
-        return ['completionsubmit' => get_string('completionsubmit', 'feedbackwall')];
+        return ['completionsubmit' => get_string('completionsubmit', 'phrasewall')];
     }
 
     /**

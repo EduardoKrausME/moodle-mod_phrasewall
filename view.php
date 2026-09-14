@@ -17,7 +17,7 @@
 /**
  * Main wall page.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,43 +26,43 @@ require('../../config.php');
 
 $id = required_param('id', PARAM_INT);
 
-$cm = get_coursemodule_from_id('feedbackwall', $id, 0, false, MUST_EXIST);
+$cm = get_coursemodule_from_id('phrasewall', $id, 0, false, MUST_EXIST);
 $course = get_course($cm->course);
-$feedbackwall = $DB->get_record('feedbackwall', ['id' => $cm->instance], '*', MUST_EXIST);
+$phrasewall = $DB->get_record('phrasewall', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-require_capability('mod/feedbackwall:view', $context);
+require_capability('mod/phrasewall:view', $context);
 
-$PAGE->set_url('/mod/feedbackwall/view.php', ['id' => $cm->id]);
-$PAGE->set_title(format_string($feedbackwall->name));
+$PAGE->set_url('/mod/phrasewall/view.php', ['id' => $cm->id]);
+$PAGE->set_title(format_string($phrasewall->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-$event = \mod_feedbackwall\event\course_module_viewed::create([
-    'objectid' => $feedbackwall->id,
+$event = \mod_phrasewall\event\course_module_viewed::create([
+    'objectid' => $phrasewall->id,
     'context' => $context,
 ]);
-$event->add_record_snapshot('feedbackwall', $feedbackwall);
+$event->add_record_snapshot('phrasewall', $phrasewall);
 $event->trigger();
 
-$manager = new \mod_feedbackwall\manager($feedbackwall, $cm, $course, $context);
+$manager = new \mod_phrasewall\manager($phrasewall, $cm, $course, $context);
 $currentpost = $manager->get_user_post($USER->id);
-$canpost = has_capability('mod/feedbackwall:submit', $context);
-$caneditpost = !$currentpost || !empty($feedbackwall->allowedit);
+$canpost = has_capability('mod/phrasewall:submit', $context);
+$caneditpost = !$currentpost || !empty($phrasewall->allowedit);
 
 if ($canpost && $caneditpost) {
-    $form = new \mod_feedbackwall\form\post_form(null, [
+    $form = new \mod_phrasewall\form\post_form(null, [
         'cmid' => $cm->id,
-        'feedbackwall' => $feedbackwall,
+        'phrasewall' => $phrasewall,
         'post' => $currentpost,
     ]);
 
     if ($data = $form->get_data()) {
         $manager->save_user_post($USER->id, $data->message);
         redirect(
-            new moodle_url('/mod/feedbackwall/view.php', ['id' => $cm->id]),
-            get_string('postsaved', 'feedbackwall'),
+            new moodle_url('/mod/phrasewall/view.php', ['id' => $cm->id]),
+            get_string('postsaved', 'phrasewall'),
             null,
             \core\output\notification::NOTIFY_SUCCESS
         );
@@ -71,9 +71,9 @@ if ($canpost && $caneditpost) {
 
 $posts = $manager->get_wall_posts();
 $templateposts = [];
-$showauthors = empty($feedbackwall->anonymous);
+$showauthors = empty($phrasewall->anonymous);
 foreach ($posts as $post) {
-    $author = $showauthors ? fullname($post) : get_string('anonymousauthor', 'feedbackwall');
+    $author = $showauthors ? fullname($post) : get_string('anonymousauthor', 'phrasewall');
     $initial = $showauthors ? \core_text::strtoupper(\core_text::substr($author, 0, 1)) : '?';
     $templateposts[] = [
         'message' => $post->message,
@@ -84,35 +84,35 @@ foreach ($posts as $post) {
     ];
 }
 
-$reporturl = new moodle_url('/mod/feedbackwall/report.php', ['id' => $cm->id]);
+$reporturl = new moodle_url('/mod/phrasewall/report.php', ['id' => $cm->id]);
 $templatecontext = [
     'posts' => $templateposts,
     'hasposts' => !empty($templateposts),
     'count' => count($templateposts),
-    'countlabel' => get_string('responsescount', 'feedbackwall', count($templateposts)),
-    'anonymous' => !empty($feedbackwall->anonymous),
-    'anonymousnotice' => get_string('anonymousnotice', 'feedbackwall'),
-    'noresponses' => get_string('noresponses', 'feedbackwall'),
-    'noresponsesdescription' => get_string('noresponsesdescription', 'feedbackwall'),
-    'canviewreport' => has_capability('mod/feedbackwall:viewreport', $context),
+    'countlabel' => get_string('responsescount', 'phrasewall', count($templateposts)),
+    'anonymous' => !empty($phrasewall->anonymous),
+    'anonymousnotice' => get_string('anonymousnotice', 'phrasewall'),
+    'noresponses' => get_string('noresponses', 'phrasewall'),
+    'noresponsesdescription' => get_string('noresponsesdescription', 'phrasewall'),
+    'canviewreport' => has_capability('mod/phrasewall:viewreport', $context),
     'reporturl' => $reporturl->out(false),
-    'reportlabel' => get_string('report', 'feedbackwall'),
+    'reportlabel' => get_string('report', 'phrasewall'),
 ];
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_string($feedbackwall->name));
+echo $OUTPUT->heading(format_string($phrasewall->name));
 
-if (!empty($feedbackwall->intro)) {
-    echo $OUTPUT->box(format_module_intro('feedbackwall', $feedbackwall, $cm->id), 'generalbox mod_introbox');
+if (!empty($phrasewall->intro)) {
+    echo $OUTPUT->box(format_module_intro('phrasewall', $phrasewall, $cm->id), 'generalbox mod_introbox');
 }
 
 if ($canpost) {
     if (!$caneditpost) {
-        echo $OUTPUT->notification(get_string('cannotedit', 'feedbackwall'), \core\output\notification::NOTIFY_INFO);
+        echo $OUTPUT->notification(get_string('cannotedit', 'phrasewall'), \core\output\notification::NOTIFY_INFO);
     } else {
         $form->display();
     }
 }
 
-echo $OUTPUT->render_from_template('mod_feedbackwall/wall', $templatecontext);
+echo $OUTPUT->render_from_template('mod_phrasewall/wall', $templatecontext);
 echo $OUTPUT->footer();

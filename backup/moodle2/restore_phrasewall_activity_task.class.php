@@ -17,7 +17,7 @@
 /**
  * Restore task for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 /**
  * Defines the restore task.
  */
-class restore_feedbackwall_activity_task extends restore_activity_task {
+class restore_phrasewall_activity_task extends restore_activity_task {
 
     /**
      * No module-specific settings are required.
@@ -41,7 +41,7 @@ class restore_feedbackwall_activity_task extends restore_activity_task {
      * @return void
      */
     protected function define_my_steps() {
-        $this->add_step(new restore_feedbackwall_activity_structure_step('feedbackwall_structure', 'feedbackwall.xml'));
+        $this->add_step(new restore_phrasewall_activity_structure_step('phrasewall_structure', 'phrasewall.xml'));
     }
 
     /**
@@ -50,7 +50,7 @@ class restore_feedbackwall_activity_task extends restore_activity_task {
      * @return array
      */
     public static function define_decode_contents() {
-        return [new restore_decode_content('feedbackwall', ['intro'], 'feedbackwall')];
+        return [new restore_decode_content('phrasewall', ['intro'], 'phrasewall')];
     }
 
     /**
@@ -60,8 +60,8 @@ class restore_feedbackwall_activity_task extends restore_activity_task {
      */
     public static function define_decode_rules() {
         return [
-            new restore_decode_rule('FEEDBACKWALLVIEWBYID', '/mod/feedbackwall/view.php?id=$1', 'course_module'),
-            new restore_decode_rule('FEEDBACKWALLINDEX', '/mod/feedbackwall/index.php?id=$1', 'course'),
+            new restore_decode_rule('FEEDBACKWALLVIEWBYID', '/mod/phrasewall/view.php?id=$1', 'course_module'),
+            new restore_decode_rule('FEEDBACKWALLINDEX', '/mod/phrasewall/index.php?id=$1', 'course'),
         ];
     }
 }

@@ -17,12 +17,12 @@
 /**
  * Student post form.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall\form;
+namespace mod_phrasewall\form;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -40,25 +40,25 @@ class post_form extends \moodleform {
      */
     public function definition() {
         $mform = $this->_form;
-        $feedbackwall = $this->_customdata['feedbackwall'];
+        $phrasewall = $this->_customdata['phrasewall'];
         $post = $this->_customdata['post'] ?? null;
 
-        $mform->addElement('text', 'message', get_string('yourphrase', 'feedbackwall'), [
-            'maxlength' => (int) $feedbackwall->maxchars,
-            'size' => min(80, (int) $feedbackwall->maxchars),
-            'placeholder' => get_string('phraseplaceholder', 'feedbackwall'),
+        $mform->addElement('text', 'message', get_string('yourphrase', 'phrasewall'), [
+            'maxlength' => (int) $phrasewall->maxchars,
+            'size' => min(80, (int) $phrasewall->maxchars),
+            'placeholder' => get_string('phraseplaceholder', 'phrasewall'),
             'autocomplete' => 'off',
         ]);
         $mform->setType('message', PARAM_TEXT);
         $mform->addRule('message', null, 'required', null, 'client');
         $mform->addRule(
             'message',
-            get_string('errormaxchars', 'feedbackwall', $feedbackwall->maxchars),
+            get_string('errormaxchars', 'phrasewall', $phrasewall->maxchars),
             'maxlength',
-            $feedbackwall->maxchars,
+            $phrasewall->maxchars,
             'client'
         );
-        $mform->addHelpButton('message', 'yourphrase', 'feedbackwall');
+        $mform->addHelpButton('message', 'yourphrase', 'phrasewall');
 
         $mform->addElement('hidden', 'id', $this->_customdata['cmid']);
         $mform->setType('id', PARAM_INT);
@@ -67,7 +67,7 @@ class post_form extends \moodleform {
             $mform->setDefault('message', $post->message);
         }
 
-        $buttonlabel = $post ? get_string('updatephrase', 'feedbackwall') : get_string('submitphrase', 'feedbackwall');
+        $buttonlabel = $post ? get_string('updatephrase', 'phrasewall') : get_string('submitphrase', 'phrasewall');
         $this->add_action_buttons(false, $buttonlabel);
     }
 
@@ -80,13 +80,13 @@ class post_form extends \moodleform {
      */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
-        $feedbackwall = $this->_customdata['feedbackwall'];
+        $phrasewall = $this->_customdata['phrasewall'];
         $message = trim((string) ($data['message'] ?? ''));
 
         if ($message === '') {
-            $errors['message'] = get_string('errorempty', 'feedbackwall');
-        } else if (\core_text::strlen($message) > (int) $feedbackwall->maxchars) {
-            $errors['message'] = get_string('errormaxchars', 'feedbackwall', $feedbackwall->maxchars);
+            $errors['message'] = get_string('errorempty', 'phrasewall');
+        } else if (\core_text::strlen($message) > (int) $phrasewall->maxchars) {
+            $errors['message'] = get_string('errormaxchars', 'phrasewall', $phrasewall->maxchars);
         }
 
         return $errors;

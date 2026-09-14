@@ -17,17 +17,17 @@
 /**
  * Upgrade file.
  *
- * @package    mod_feedbackwall
+ * @package    mod_phrasewall
  * @copyright  2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Upgrade steps for feedbackwall.
+ * Upgrade steps for phrasewall.
  *
  * @param int $oldversion
  * @return bool
  */
-function xmldb_feedbackwall_upgrade($oldversion) {
+function xmldb_phrasewall_upgrade($oldversion) {
     return true;
 }

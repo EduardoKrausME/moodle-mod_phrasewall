@@ -15,18 +15,18 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_feedbackwall/wall
+    @template mod_phrasewall/wall
 
     Example context (json):
     {
         Aqui tem que criar o context em inglês
     }
 }}
-<div class="feedbackwall" data-region="feedbackwall">
-    <div class="feedbackwall__toolbar">
-        <div class="feedbackwall__count">{{countlabel}}</div>
+<div class="phrasewall" data-region="phrasewall">
+    <div class="phrasewall__toolbar">
+        <div class="phrasewall__count">{{countlabel}}</div>
         {{#anonymous}}
-            <div class="feedbackwall__privacy">{{anonymousnotice}}</div>
+            <div class="phrasewall__privacy">{{anonymousnotice}}</div>
         {{/anonymous}}
         {{#canviewreport}}
             <a class="btn btn-outline-secondary btn-sm" href="{{reporturl}}">{{reportlabel}}</a>
@@ -34,16 +34,16 @@
     </div>
 
     {{#hasposts}}
-        <div class="feedbackwall__grid">
+        <div class="phrasewall__grid">
             {{#posts}}
-                <article class="feedbackwall__card">
-                    <div class="feedbackwall__quote" aria-hidden="true">“</div>
-                    <div class="feedbackwall__message">{{message}}</div>
-                    <div class="feedbackwall__footer">
-                        <div class="feedbackwall__avatar" aria-hidden="true">{{initial}}</div>
-                        <div class="feedbackwall__meta">
-                            <div class="feedbackwall__author">{{author}}</div>
-                            <div class="feedbackwall__time">{{time}}</div>
+                <article class="phrasewall__card">
+                    <div class="phrasewall__quote" aria-hidden="true">“</div>
+                    <div class="phrasewall__message">{{message}}</div>
+                    <div class="phrasewall__footer">
+                        <div class="phrasewall__avatar" aria-hidden="true">{{initial}}</div>
+                        <div class="phrasewall__meta">
+                            <div class="phrasewall__author">{{author}}</div>
+                            <div class="phrasewall__time">{{time}}</div>
                         </div>
                     </div>
                 </article>
@@ -52,8 +52,8 @@
     {{/hasposts}}
 
     {{^hasposts}}
-        <div class="feedbackwall__empty">
-            <div class="feedbackwall__empty-icon" aria-hidden="true">“”</div>
+        <div class="phrasewall__empty">
+            <div class="phrasewall__empty-icon" aria-hidden="true">“”</div>
             <strong>{{noresponses}}</strong>
             <span>{{noresponsesdescription}}</span>
         </div>

@@ -17,12 +17,12 @@
 /**
  * Course module viewed event.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall\event;
+namespace mod_phrasewall\event;
 
 /**
  * Event fired when the wall is viewed.
@@ -35,7 +35,7 @@ class course_module_viewed extends \core\event\course_module_viewed {
      * @return void
      */
     protected function init() {
-        $this->data['objecttable'] = 'feedbackwall';
+        $this->data['objecttable'] = 'phrasewall';
         parent::init();
     }
 
@@ -45,7 +45,7 @@ class course_module_viewed extends \core\event\course_module_viewed {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventcoursemoduleviewed', 'feedbackwall');
+        return get_string('eventcoursemoduleviewed', 'phrasewall');
     }
 
     /**
@@ -54,6 +54,6 @@ class course_module_viewed extends \core\event\course_module_viewed {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/feedbackwall/view.php', ['id' => $this->contextinstanceid]);
+        return new \moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
     }
 }

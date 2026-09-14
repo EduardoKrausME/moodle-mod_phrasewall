@@ -17,12 +17,12 @@
 /**
  * Privacy provider for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall\privacy;
+namespace mod_phrasewall\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -47,13 +47,13 @@ class provider implements
      * @return collection
      */
     public static function get_metadata(collection $collection): collection {
-        $collection->add_database_table('feedbackwall_posts', [
-            'feedbackwallid' => 'privacy:metadata:feedbackwall_posts:feedbackwallid',
-            'userid' => 'privacy:metadata:feedbackwall_posts:userid',
-            'message' => 'privacy:metadata:feedbackwall_posts:message',
-            'timecreated' => 'privacy:metadata:feedbackwall_posts:timecreated',
-            'timemodified' => 'privacy:metadata:feedbackwall_posts:timemodified',
-        ], 'privacy:metadata:feedbackwall_posts');
+        $collection->add_database_table('phrasewall_posts', [
+            'phrasewallid' => 'privacy:metadata:phrasewall_posts:phrasewallid',
+            'userid' => 'privacy:metadata:phrasewall_posts:userid',
+            'message' => 'privacy:metadata:phrasewall_posts:message',
+            'timecreated' => 'privacy:metadata:phrasewall_posts:timecreated',
+            'timemodified' => 'privacy:metadata:phrasewall_posts:timemodified',
+        ], 'privacy:metadata:phrasewall_posts');
 
         return $collection;
     }
@@ -69,14 +69,14 @@ class provider implements
                   FROM {context} ctx
                   JOIN {course_modules} cm ON cm.id = ctx.instanceid
                   JOIN {modules} m ON m.id = cm.module AND m.name = :modname
-                  JOIN {feedbackwall} f ON f.id = cm.instance
-                  JOIN {feedbackwall_posts} p ON p.feedbackwallid = f.id
+                  JOIN {phrasewall} f ON f.id = cm.instance
+                  JOIN {phrasewall_posts} p ON p.phrasewallid = f.id
                  WHERE ctx.contextlevel = :contextlevel
                    AND p.userid = :userid";
 
         $contextlist = new contextlist();
         $contextlist->add_from_sql($sql, [
-            'modname' => 'feedbackwall',
+            'modname' => 'phrasewall',
             'contextlevel' => CONTEXT_MODULE,
             'userid' => $userid,
         ]);
@@ -97,13 +97,13 @@ class provider implements
                 continue;
             }
 
-            $cm = get_coursemodule_from_id('feedbackwall', $context->instanceid);
+            $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
             if (!$cm) {
                 continue;
             }
 
-            $post = $DB->get_record('feedbackwall_posts', [
-                'feedbackwallid' => $cm->instance,
+            $post = $DB->get_record('phrasewall_posts', [
+                'phrasewallid' => $cm->instance,
                 'userid' => $contextlist->get_user()->id,
             ]);
             if (!$post) {
@@ -115,7 +115,7 @@ class provider implements
                 'timecreated' => transform::datetime($post->timecreated),
                 'timemodified' => transform::datetime($post->timemodified),
             ];
-            writer::with_context($context)->export_data([get_string('privacy:submissionpath', 'feedbackwall')], $data);
+            writer::with_context($context)->export_data([get_string('privacy:submissionpath', 'phrasewall')], $data);
         }
     }
 
@@ -132,9 +132,9 @@ class provider implements
             return;
         }
 
-        $cm = get_coursemodule_from_id('feedbackwall', $context->instanceid);
+        $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
         if ($cm) {
-            $DB->delete_records('feedbackwall_posts', ['feedbackwallid' => $cm->instance]);
+            $DB->delete_records('phrasewall_posts', ['phrasewallid' => $cm->instance]);
         }
     }
 
@@ -152,10 +152,10 @@ class provider implements
             if (!$context instanceof \context_module) {
                 continue;
             }
-            $cm = get_coursemodule_from_id('feedbackwall', $context->instanceid);
+            $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
             if ($cm) {
-                $DB->delete_records('feedbackwall_posts', [
-                    'feedbackwallid' => $cm->instance,
+                $DB->delete_records('phrasewall_posts', [
+                    'phrasewallid' => $cm->instance,
                     'userid' => $userid,
                 ]);
             }
@@ -174,15 +174,15 @@ class provider implements
             return;
         }
 
-        $cm = get_coursemodule_from_id('feedbackwall', $context->instanceid);
+        $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
         if (!$cm) {
             return;
         }
 
         $sql = "SELECT p.userid
-                  FROM {feedbackwall_posts} p
-                 WHERE p.feedbackwallid = :feedbackwallid";
-        $userlist->add_from_sql('userid', $sql, ['feedbackwallid' => $cm->instance]);
+                  FROM {phrasewall_posts} p
+                 WHERE p.phrasewallid = :phrasewallid";
+        $userlist->add_from_sql('userid', $sql, ['phrasewallid' => $cm->instance]);
     }
 
     /**
@@ -199,17 +199,17 @@ class provider implements
             return;
         }
 
-        $cm = get_coursemodule_from_id('feedbackwall', $context->instanceid);
+        $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
         $userids = $userlist->get_userids();
         if (!$cm || empty($userids)) {
             return;
         }
 
         [$insql, $params] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
-        $params['feedbackwallid'] = $cm->instance;
+        $params['phrasewallid'] = $cm->instance;
         $DB->delete_records_select(
-            'feedbackwall_posts',
-            "feedbackwallid = :feedbackwallid AND userid {$insql}",
+            'phrasewall_posts',
+            "phrasewallid = :phrasewallid AND userid {$insql}",
             $params
         );
     }

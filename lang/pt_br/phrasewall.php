@@ -17,7 +17,7 @@
 /**
  * Brazilian Portuguese language strings for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,11 +41,11 @@ $string['errorempty'] = 'Escreva uma frase antes de enviar.';
 $string['errormaxchars'] = 'A frase deve ter no máximo {$a} caracteres.';
 $string['eventcoursemoduleviewed'] = 'Mural de uma frase visualizado';
 $string['eventpostsubmitted'] = 'Frase publicada no mural';
-$string['feedbackwall:addinstance'] = 'Adicionar um novo Mural de uma frase';
-$string['feedbackwall:manageposts'] = 'Excluir respostas dos estudantes';
-$string['feedbackwall:submit'] = 'Publicar uma frase';
-$string['feedbackwall:view'] = 'Visualizar o Mural de uma frase';
-$string['feedbackwall:viewreport'] = 'Visualizar o relatório e a autoria das respostas';
+$string['phrasewall:addinstance'] = 'Adicionar um novo Mural de uma frase';
+$string['phrasewall:manageposts'] = 'Excluir respostas dos estudantes';
+$string['phrasewall:submit'] = 'Publicar uma frase';
+$string['phrasewall:view'] = 'Visualizar o Mural de uma frase';
+$string['phrasewall:viewreport'] = 'Visualizar o relatório e a autoria das respostas';
 $string['maxchars'] = 'Tamanho máximo da frase';
 $string['maxchars_help'] = 'Quantidade máxima de caracteres permitida na resposta de cada estudante.';
 $string['modified'] = 'Última alteração';
@@ -62,12 +62,12 @@ $string['pluginadministration'] = 'Administração do Mural de uma frase';
 $string['pluginname'] = 'Mural de uma frase';
 $string['postdeleted'] = 'A resposta foi excluída.';
 $string['postsaved'] = 'Sua frase foi salva.';
-$string['privacy:metadata:feedbackwall_posts'] = 'Armazena a frase publicada por cada participante.';
-$string['privacy:metadata:feedbackwall_posts:feedbackwallid'] = 'A atividade Mural de uma frase que recebeu a resposta.';
-$string['privacy:metadata:feedbackwall_posts:message'] = 'A frase publicada pelo usuário.';
-$string['privacy:metadata:feedbackwall_posts:timecreated'] = 'Data e hora em que a frase foi publicada pela primeira vez.';
-$string['privacy:metadata:feedbackwall_posts:timemodified'] = 'Data e hora da última alteração da frase.';
-$string['privacy:metadata:feedbackwall_posts:userid'] = 'O usuário que publicou a frase.';
+$string['privacy:metadata:phrasewall_posts'] = 'Armazena a frase publicada por cada participante.';
+$string['privacy:metadata:phrasewall_posts:phrasewallid'] = 'A atividade Mural de uma frase que recebeu a resposta.';
+$string['privacy:metadata:phrasewall_posts:message'] = 'A frase publicada pelo usuário.';
+$string['privacy:metadata:phrasewall_posts:timecreated'] = 'Data e hora em que a frase foi publicada pela primeira vez.';
+$string['privacy:metadata:phrasewall_posts:timemodified'] = 'Data e hora da última alteração da frase.';
+$string['privacy:metadata:phrasewall_posts:userid'] = 'O usuário que publicou a frase.';
 $string['privacy:submissionpath'] = 'Frase do mural';
 $string['report'] = 'Relatório de respostas';
 $string['reportanonymousnotice'] = 'O mural público está configurado como anônimo. Este relatório do professor exibe a autoria para moderação e auditoria.';

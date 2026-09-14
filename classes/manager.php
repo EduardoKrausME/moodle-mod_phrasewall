@@ -17,12 +17,12 @@
 /**
  * Domain operations for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall;
+namespace mod_phrasewall;
 
 /**
  * Handles posts and completion state for one activity instance.
@@ -30,7 +30,7 @@ namespace mod_feedbackwall;
 class manager {
 
     /** @var \stdClass Activity record. */
-    private $feedbackwall;
+    private $phrasewall;
 
     /** @var \cm_info|\stdClass Course module. */
     private $cm;
@@ -44,13 +44,13 @@ class manager {
     /**
      * Constructor.
      *
-     * @param \stdClass $feedbackwall Activity record.
+     * @param \stdClass $phrasewall Activity record.
      * @param \cm_info|\stdClass $cm Course module.
      * @param \stdClass $course Course record.
      * @param \context_module $context Module context.
      */
-    public function __construct($feedbackwall, $cm, $course, $context) {
-        $this->feedbackwall = $feedbackwall;
+    public function __construct($phrasewall, $cm, $course, $context) {
+        $this->phrasewall = $phrasewall;
         $this->cm = $cm;
         $this->course = $course;
         $this->context = $context;
@@ -65,8 +65,8 @@ class manager {
     public function get_user_post(int $userid) {
         global $DB;
 
-        return $DB->get_record('feedbackwall_posts', [
-            'feedbackwallid' => $this->feedbackwall->id,
+        return $DB->get_record('phrasewall_posts', [
+            'phrasewallid' => $this->phrasewall->id,
             'userid' => $userid,
         ]);
     }
@@ -81,43 +81,43 @@ class manager {
     public function save_user_post(int $userid, string $message): int {
         global $DB;
 
-        require_capability('mod/feedbackwall:submit', $this->context, $userid);
+        require_capability('mod/phrasewall:submit', $this->context, $userid);
 
         $message = trim(clean_param($message, PARAM_TEXT));
         if ($message === '') {
-            throw new \moodle_exception('errorempty', 'feedbackwall');
+            throw new \moodle_exception('errorempty', 'phrasewall');
         }
-        if (\core_text::strlen($message) > (int) $this->feedbackwall->maxchars) {
-            throw new \moodle_exception('errormaxchars', 'feedbackwall', '', $this->feedbackwall->maxchars);
+        if (\core_text::strlen($message) > (int) $this->phrasewall->maxchars) {
+            throw new \moodle_exception('errormaxchars', 'phrasewall', '', $this->phrasewall->maxchars);
         }
 
         $existing = $this->get_user_post($userid);
         $now = time();
 
         if ($existing) {
-            if (empty($this->feedbackwall->allowedit)) {
-                throw new \moodle_exception('cannotedit', 'feedbackwall');
+            if (empty($this->phrasewall->allowedit)) {
+                throw new \moodle_exception('cannotedit', 'phrasewall');
             }
             $existing->message = $message;
             $existing->timemodified = $now;
-            $DB->update_record('feedbackwall_posts', $existing);
+            $DB->update_record('phrasewall_posts', $existing);
             $postid = (int) $existing->id;
         } else {
             $post = (object) [
-                'feedbackwallid' => $this->feedbackwall->id,
+                'phrasewallid' => $this->phrasewall->id,
                 'userid' => $userid,
                 'message' => $message,
                 'timecreated' => $now,
                 'timemodified' => $now,
             ];
-            $postid = $DB->insert_record('feedbackwall_posts', $post);
+            $postid = $DB->insert_record('phrasewall_posts', $post);
         }
 
-        $event = \mod_feedbackwall\event\post_submitted::create([
+        $event = \mod_phrasewall\event\post_submitted::create([
             'objectid' => $postid,
             'context' => $this->context,
             'relateduserid' => $userid,
-            'other' => ['feedbackwallid' => $this->feedbackwall->id],
+            'other' => ['phrasewallid' => $this->phrasewall->id],
         ]);
         $event->trigger();
 
@@ -135,12 +135,12 @@ class manager {
 
         $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', true)->selects;
         $sql = "SELECT p.id, p.userid, p.message, p.timecreated, p.timemodified {$namefields}
-                  FROM {feedbackwall_posts} p
+                  FROM {phrasewall_posts} p
                   JOIN {user} u ON u.id = p.userid
-                 WHERE p.feedbackwallid = :feedbackwallid
+                 WHERE p.phrasewallid = :phrasewallid
               ORDER BY p.timecreated ASC";
 
-        return $DB->get_records_sql($sql, ['feedbackwallid' => $this->feedbackwall->id]);
+        return $DB->get_records_sql($sql, ['phrasewallid' => $this->phrasewall->id]);
     }
 
     /**
@@ -152,13 +152,13 @@ class manager {
     public function delete_post(int $postid): void {
         global $DB;
 
-        require_capability('mod/feedbackwall:manageposts', $this->context);
-        $post = $DB->get_record('feedbackwall_posts', [
+        require_capability('mod/phrasewall:manageposts', $this->context);
+        $post = $DB->get_record('phrasewall_posts', [
             'id' => $postid,
-            'feedbackwallid' => $this->feedbackwall->id,
+            'phrasewallid' => $this->phrasewall->id,
         ], '*', MUST_EXIST);
 
-        $DB->delete_records('feedbackwall_posts', ['id' => $post->id]);
+        $DB->delete_records('phrasewall_posts', ['id' => $post->id]);
         $this->refresh_completion((int) $post->userid);
     }
 

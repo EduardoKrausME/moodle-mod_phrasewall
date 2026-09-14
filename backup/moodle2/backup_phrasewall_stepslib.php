@@ -17,7 +17,7 @@
 /**
  * Backup structure for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 /**
  * Defines activity data included in backups.
  */
-class backup_feedbackwall_activity_structure_step extends backup_activity_structure_step {
+class backup_phrasewall_activity_structure_step extends backup_activity_structure_step {
 
     /**
      * Builds the backup structure tree.
@@ -35,7 +35,7 @@ class backup_feedbackwall_activity_structure_step extends backup_activity_struct
     protected function define_structure() {
         $userinfo = $this->get_setting_value('userinfo');
 
-        $feedbackwall = new backup_nested_element('feedbackwall', ['id'], [
+        $phrasewall = new backup_nested_element('phrasewall', ['id'], [
             'name', 'intro', 'introformat', 'anonymous', 'maxchars', 'allowedit', 'completionsubmit',
             'timecreated', 'timemodified',
         ]);
@@ -44,17 +44,17 @@ class backup_feedbackwall_activity_structure_step extends backup_activity_struct
             'userid', 'message', 'timecreated', 'timemodified',
         ]);
 
-        $feedbackwall->add_child($posts);
+        $phrasewall->add_child($posts);
         $posts->add_child($post);
 
-        $feedbackwall->set_source_table('feedbackwall', ['id' => backup::VAR_ACTIVITYID]);
+        $phrasewall->set_source_table('phrasewall', ['id' => backup::VAR_ACTIVITYID]);
         if ($userinfo) {
-            $post->set_source_table('feedbackwall_posts', ['feedbackwallid' => backup::VAR_PARENTID]);
+            $post->set_source_table('phrasewall_posts', ['phrasewallid' => backup::VAR_PARENTID]);
         }
 
         $post->annotate_ids('user', 'userid');
-        $feedbackwall->annotate_files('mod_feedbackwall', 'intro', null);
+        $phrasewall->annotate_files('mod_phrasewall', 'intro', null);
 
-        return $this->prepare_activity_structure($feedbackwall);
+        return $this->prepare_activity_structure($phrasewall);
     }
 }

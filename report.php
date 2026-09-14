@@ -17,7 +17,7 @@
 /**
  * Teacher report for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,60 +27,60 @@ require_once($CFG->libdir . '/tablelib.php');
 
 $id = required_param('id', PARAM_INT);
 
-$cm = get_coursemodule_from_id('feedbackwall', $id, 0, false, MUST_EXIST);
+$cm = get_coursemodule_from_id('phrasewall', $id, 0, false, MUST_EXIST);
 $course = get_course($cm->course);
-$feedbackwall = $DB->get_record('feedbackwall', ['id' => $cm->instance], '*', MUST_EXIST);
+$phrasewall = $DB->get_record('phrasewall', ['id' => $cm->instance], '*', MUST_EXIST);
 
 require_login($course, true, $cm);
 $context = context_module::instance($cm->id);
-require_capability('mod/feedbackwall:viewreport', $context);
+require_capability('mod/phrasewall:viewreport', $context);
 
-$PAGE->set_url('/mod/feedbackwall/report.php', ['id' => $cm->id]);
-$PAGE->set_title(get_string('report', 'feedbackwall'));
+$PAGE->set_url('/mod/phrasewall/report.php', ['id' => $cm->id]);
+$PAGE->set_title(get_string('report', 'phrasewall'));
 $PAGE->set_heading(format_string($course->fullname));
-$PAGE->navbar->add(get_string('report', 'feedbackwall'));
+$PAGE->navbar->add(get_string('report', 'phrasewall'));
 
 $sql = "SELECT p.id, p.userid, p.message, p.timecreated, p.timemodified,
                u.firstname, u.lastname, u.firstnamephonetic, u.lastnamephonetic,
                u.middlename, u.alternatename
-          FROM {feedbackwall_posts} p
+          FROM {phrasewall_posts} p
           JOIN {user} u ON u.id = p.userid
-         WHERE p.feedbackwallid = :feedbackwallid
+         WHERE p.phrasewallid = :phrasewallid
       ORDER BY p.timemodified DESC";
-$posts = $DB->get_records_sql($sql, ['feedbackwallid' => $feedbackwall->id]);
+$posts = $DB->get_records_sql($sql, ['phrasewallid' => $phrasewall->id]);
 
-$table = new flexible_table('mod-feedbackwall-report-' . $feedbackwall->id);
+$table = new flexible_table('mod-phrasewall-report-' . $phrasewall->id);
 $table->define_columns(['participant', 'phrase', 'created', 'modified', 'actions']);
 $table->define_headers([
-    get_string('participant', 'feedbackwall'),
-    get_string('phrase', 'feedbackwall'),
-    get_string('created', 'feedbackwall'),
-    get_string('modified', 'feedbackwall'),
-    get_string('actions', 'feedbackwall'),
+    get_string('participant', 'phrasewall'),
+    get_string('phrase', 'phrasewall'),
+    get_string('created', 'phrasewall'),
+    get_string('modified', 'phrasewall'),
+    get_string('actions', 'phrasewall'),
 ]);
 $table->define_baseurl($PAGE->url);
 $table->set_attribute('class', 'generaltable generalbox');
 $table->setup();
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('report', 'feedbackwall'));
+echo $OUTPUT->heading(get_string('report', 'phrasewall'));
 
-if (!empty($feedbackwall->anonymous)) {
-    echo $OUTPUT->notification(get_string('reportanonymousnotice', 'feedbackwall'), \core\output\notification::NOTIFY_INFO);
+if (!empty($phrasewall->anonymous)) {
+    echo $OUTPUT->notification(get_string('reportanonymousnotice', 'phrasewall'), \core\output\notification::NOTIFY_INFO);
 }
 
 foreach ($posts as $post) {
     $userurl = new moodle_url('/user/view.php', ['id' => $post->userid, 'course' => $course->id]);
     $participant = html_writer::link($userurl, fullname($post));
-    $deleteurl = new moodle_url('/mod/feedbackwall/delete.php', [
+    $deleteurl = new moodle_url('/mod/phrasewall/delete.php', [
         'id' => $cm->id,
         'postid' => $post->id,
     ]);
     $actions = '';
-    if (has_capability('mod/feedbackwall:manageposts', $context)) {
+    if (has_capability('mod/phrasewall:manageposts', $context)) {
         $actions = $OUTPUT->action_icon(
             $deleteurl,
-            new pix_icon('t/delete', get_string('delete', 'feedbackwall'))
+            new pix_icon('t/delete', get_string('delete', 'phrasewall'))
         );
     }
 

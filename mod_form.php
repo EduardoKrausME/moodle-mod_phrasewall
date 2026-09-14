@@ -17,7 +17,7 @@
 /**
  * Activity settings form for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/course/moodleform_mod.php');
 /**
  * Activity creation and editing form.
  */
-class mod_feedbackwall_mod_form extends moodleform_mod {
+class mod_phrasewall_mod_form extends moodleform_mod {
 
     /**
      * Defines activity fields.
@@ -39,21 +39,21 @@ class mod_feedbackwall_mod_form extends moodleform_mod {
     public function definition() {
         $mform = $this->_form;
 
-        $mform->addElement('text', 'name', get_string('name', 'feedbackwall'), ['size' => 64]);
+        $mform->addElement('text', 'name', get_string('name', 'phrasewall'), ['size' => 64]);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         $this->standard_intro_elements();
 
-        $mform->addElement("html", html_writer::tag("h3", get_string('settingsheader', 'feedbackwall')));
+        $mform->addElement("html", html_writer::tag("h3", get_string('settingsheader', 'phrasewall')));
 
         $options = [
-            0 => get_string('named', 'feedbackwall'),
-            1 => get_string('anonymous', 'feedbackwall'),
+            0 => get_string('named', 'phrasewall'),
+            1 => get_string('anonymous', 'phrasewall'),
         ];
-        $mform->addElement('select', 'anonymous', get_string('anonymity', 'feedbackwall'), $options);
-        $mform->addHelpButton('anonymous', 'anonymity', 'feedbackwall');
+        $mform->addElement('select', 'anonymous', get_string('anonymity', 'phrasewall'), $options);
+        $mform->addHelpButton('anonymous', 'anonymity', 'phrasewall');
         $mform->setDefault('anonymous', 0);
 
         $charoptions = [
@@ -64,12 +64,12 @@ class mod_feedbackwall_mod_form extends moodleform_mod {
             200 => '200',
             280 => '280',
         ];
-        $mform->addElement('select', 'maxchars', get_string('maxchars', 'feedbackwall'), $charoptions);
-        $mform->addHelpButton('maxchars', 'maxchars', 'feedbackwall');
+        $mform->addElement('select', 'maxchars', get_string('maxchars', 'phrasewall'), $charoptions);
+        $mform->addHelpButton('maxchars', 'maxchars', 'phrasewall');
         $mform->setDefault('maxchars', 160);
 
-        $mform->addElement('advcheckbox', 'allowedit', get_string('allowedit', 'feedbackwall'));
-        $mform->addHelpButton('allowedit', 'allowedit', 'feedbackwall');
+        $mform->addElement('advcheckbox', 'allowedit', get_string('allowedit', 'phrasewall'));
+        $mform->addHelpButton('allowedit', 'allowedit', 'phrasewall');
         $mform->setDefault('allowedit', 1);
 
         $this->standard_coursemodule_elements();
@@ -86,7 +86,7 @@ class mod_feedbackwall_mod_form extends moodleform_mod {
         $suffix = $this->get_suffix();
         $elementname = 'completionsubmit' . $suffix;
 
-        $mform->addElement('checkbox', $elementname, '', get_string('completionsubmit', 'feedbackwall'));
+        $mform->addElement('checkbox', $elementname, '', get_string('completionsubmit', 'phrasewall'));
         $mform->setDefault($elementname, 1);
 
         return [$elementname];

@@ -17,11 +17,11 @@
 /**
  * Restore structure for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_feedbackwall_activity_structure_step extends restore_activity_structure_step {
+class restore_phrasewall_activity_structure_step extends restore_activity_structure_step {
 
     /**
      * Defines restore paths.
@@ -29,9 +29,9 @@ class restore_feedbackwall_activity_structure_step extends restore_activity_stru
      * @return array
      */
     protected function define_structure() {
-        $paths = [new restore_path_element('feedbackwall', '/activity/feedbackwall')];
+        $paths = [new restore_path_element('phrasewall', '/activity/phrasewall')];
         if ($this->get_setting_value('userinfo')) {
-            $paths[] = new restore_path_element('feedbackwall_post', '/activity/feedbackwall/posts/post');
+            $paths[] = new restore_path_element('phrasewall_post', '/activity/phrasewall/posts/post');
         }
         return $this->prepare_activity_structure($paths);
     }
@@ -42,7 +42,7 @@ class restore_feedbackwall_activity_structure_step extends restore_activity_stru
      * @param array $data Restored data.
      * @return void
      */
-    protected function process_feedbackwall($data) {
+    protected function process_phrasewall($data) {
         global $DB;
 
         $data = (object) $data;
@@ -50,7 +50,7 @@ class restore_feedbackwall_activity_structure_step extends restore_activity_stru
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
 
-        $newitemid = $DB->insert_record('feedbackwall', $data);
+        $newitemid = $DB->insert_record('phrasewall', $data);
         $this->apply_activity_instance($newitemid);
     }
 
@@ -60,15 +60,15 @@ class restore_feedbackwall_activity_structure_step extends restore_activity_stru
      * @param array $data Restored data.
      * @return void
      */
-    protected function process_feedbackwall_post($data) {
+    protected function process_phrasewall_post($data) {
         global $DB;
 
         $data = (object) $data;
-        $data->feedbackwallid = $this->get_new_parentid('feedbackwall');
+        $data->phrasewallid = $this->get_new_parentid('phrasewall');
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
-        $DB->insert_record('feedbackwall_posts', $data);
+        $DB->insert_record('phrasewall_posts', $data);
     }
 
     /**
@@ -77,6 +77,6 @@ class restore_feedbackwall_activity_structure_step extends restore_activity_stru
      * @return void
      */
     protected function after_execute() {
-        $this->add_related_files('mod_feedbackwall', 'intro', null);
+        $this->add_related_files('mod_phrasewall', 'intro', null);
     }
 }

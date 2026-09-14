@@ -17,7 +17,7 @@
 /**
  * Course activity index for Feedback wall.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,27 +28,27 @@ $id = required_param('id', PARAM_INT);
 $course = get_course($id);
 require_course_login($course);
 
-$PAGE->set_url('/mod/feedbackwall/index.php', ['id' => $course->id]);
-$PAGE->set_title(get_string('modulenameplural', 'feedbackwall'));
+$PAGE->set_url('/mod/phrasewall/index.php', ['id' => $course->id]);
+$PAGE->set_title(get_string('modulenameplural', 'phrasewall'));
 $PAGE->set_heading(format_string($course->fullname));
 
-$instances = get_all_instances_in_course('feedbackwall', $course);
+$instances = get_all_instances_in_course('phrasewall', $course);
 
 if (!$instances) {
     redirect(new moodle_url('/course/view.php', ['id' => $course->id]));
 }
 
 $table = new html_table();
-$table->head = [get_string('name', 'feedbackwall'), get_string('responses', 'feedbackwall')];
+$table->head = [get_string('name', 'phrasewall'), get_string('responses', 'phrasewall')];
 $table->data = [];
 
 foreach ($instances as $instance) {
-    $url = new moodle_url('/mod/feedbackwall/view.php', ['id' => $instance->coursemodule]);
-    $count = $DB->count_records('feedbackwall_posts', ['feedbackwallid' => $instance->id]);
+    $url = new moodle_url('/mod/phrasewall/view.php', ['id' => $instance->coursemodule]);
+    $count = $DB->count_records('phrasewall_posts', ['phrasewallid' => $instance->id]);
     $table->data[] = [html_writer::link($url, format_string($instance->name)), $count];
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('modulenameplural', 'feedbackwall'));
+echo $OUTPUT->heading(get_string('modulenameplural', 'phrasewall'));
 echo html_writer::table($table);
 echo $OUTPUT->footer();

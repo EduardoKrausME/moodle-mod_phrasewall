@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/feedbackwall/db" VERSION="2026091200" COMMENT="XMLDB file for mod_feedbackwall"
+<XMLDB PATH="mod/phrasewall/db" VERSION="2026091200" COMMENT="XMLDB file for mod_phrasewall"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
   <TABLES>
-    <TABLE NAME="feedbackwall" COMMENT="Feedback wall activity instances">
+    <TABLE NAME="phrasewall" COMMENT="Feedback wall activity instances">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -22,10 +22,10 @@
         <KEY NAME="course" TYPE="foreign" FIELDS="course" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="feedbackwall_posts" COMMENT="One short sentence per user and activity">
+    <TABLE NAME="phrasewall_posts" COMMENT="One short sentence per user and activity">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="feedbackwallid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="phrasewallid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="message" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -33,11 +33,11 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="feedbackwallid" TYPE="foreign" FIELDS="feedbackwallid" REFTABLE="feedbackwall" REFFIELDS="id"/>
+        <KEY NAME="phrasewallid" TYPE="foreign" FIELDS="phrasewallid" REFTABLE="phrasewall" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="feedbackwall-user" UNIQUE="true" FIELDS="feedbackwallid, userid"/>
+        <INDEX NAME="phrasewall-user" UNIQUE="true" FIELDS="phrasewallid, userid"/>
       </INDEXES>
     </TABLE>
   </TABLES>

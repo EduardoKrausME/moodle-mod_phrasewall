@@ -17,12 +17,12 @@
 /**
  * Post submitted event.
  *
- * @package mod_feedbackwall
+ * @package mod_phrasewall
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_feedbackwall\event;
+namespace mod_phrasewall\event;
 
 /**
  * Event fired after a student creates or updates a sentence.
@@ -37,7 +37,7 @@ class post_submitted extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'feedbackwall_posts';
+        $this->data['objecttable'] = 'phrasewall_posts';
     }
 
     /**
@@ -46,7 +46,7 @@ class post_submitted extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventpostsubmitted', 'feedbackwall');
+        return get_string('eventpostsubmitted', 'phrasewall');
     }
 
     /**
@@ -56,7 +56,7 @@ class post_submitted extends \core\event\base {
      */
     public function get_description() {
         return "The user with id '{$this->userid}' submitted or updated post '{$this->objectid}' " .
-            "in the Feedback wall activity with id '{$this->other['feedbackwallid']}'.";
+            "in the Feedback wall activity with id '{$this->other['phrasewallid']}'.";
     }
 
     /**
@@ -65,6 +65,6 @@ class post_submitted extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/feedbackwall/view.php', ['id' => $this->contextinstanceid]);
+        return new \moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
     }
 }
