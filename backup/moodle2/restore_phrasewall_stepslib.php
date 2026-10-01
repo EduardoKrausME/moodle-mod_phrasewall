@@ -45,7 +45,7 @@ class restore_phrasewall_activity_structure_step extends restore_activity_struct
     protected function process_phrasewall($data) {
         global $DB;
 
-        $data = (object) $data;
+        $data = (object)$data;
         $data->course = $this->get_courseid();
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
@@ -63,7 +63,7 @@ class restore_phrasewall_activity_structure_step extends restore_activity_struct
     protected function process_phrasewall_post($data) {
         global $DB;
 
-        $data = (object) $data;
+        $data = (object)$data;
         $data->phrasewallid = $this->get_new_parentid('phrasewall');
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timecreated = $this->apply_date_offset($data->timecreated);

@@ -24,10 +24,13 @@
 
 namespace mod_phrasewall\privacy;
 
+use context;
+use context_module;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
 use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
+use core_privacy\local\request\core_userlist_provider;
 use core_privacy\local\request\transform;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
@@ -36,9 +39,9 @@ use core_privacy\local\request\writer;
  * Describes, exports and deletes user data stored by the plugin.
  */
 class provider implements
-        \core_privacy\local\metadata\provider,
-        \core_privacy\local\request\plugin\provider,
-        \core_privacy\local\request\core_userlist_provider {
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\plugin\provider,
+    core_userlist_provider {
 
     /**
      * Describes stored personal data.
@@ -93,7 +96,7 @@ class provider implements
         global $DB;
 
         foreach ($contextlist->get_contexts() as $context) {
-            if (!$context instanceof \context_module) {
+            if (!$context instanceof context_module) {
                 continue;
             }
 
@@ -110,7 +113,7 @@ class provider implements
                 continue;
             }
 
-            $data = (object) [
+            $data = (object)[
                 'message' => $post->message,
                 'timecreated' => transform::datetime($post->timecreated),
                 'timemodified' => transform::datetime($post->timemodified),
@@ -122,13 +125,13 @@ class provider implements
     /**
      * Deletes all plugin user data in a module context.
      *
-     * @param \context $context Context.
+     * @param context $context Context.
      * @return void
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(context $context) {
         global $DB;
 
-        if (!$context instanceof \context_module) {
+        if (!$context instanceof context_module) {
             return;
         }
 
@@ -149,7 +152,7 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
-            if (!$context instanceof \context_module) {
+            if (!$context instanceof context_module) {
                 continue;
             }
             $cm = get_coursemodule_from_id('phrasewall', $context->instanceid);
@@ -170,7 +173,7 @@ class provider implements
      */
     public static function get_users_in_context(userlist $userlist) {
         $context = $userlist->get_context();
-        if (!$context instanceof \context_module) {
+        if (!$context instanceof context_module) {
             return;
         }
 
@@ -195,7 +198,7 @@ class provider implements
         global $DB;
 
         $context = $userlist->get_context();
-        if (!$context instanceof \context_module) {
+        if (!$context instanceof context_module) {
             return;
         }
 

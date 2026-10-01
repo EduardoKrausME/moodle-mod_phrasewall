@@ -24,14 +24,17 @@
 
 namespace mod_phrasewall\form;
 
-defined('MOODLE_INTERNAL') || die();
+use core_text;
+use moodleform;
+
+defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir . '/formslib.php');
 
 /**
  * Form used to create or update the user's sentence.
  */
-class post_form extends \moodleform {
+class post_form extends moodleform {
 
     /**
      * Defines form fields.
@@ -44,8 +47,8 @@ class post_form extends \moodleform {
         $post = $this->_customdata['post'] ?? null;
 
         $mform->addElement('text', 'message', get_string('yourphrase', 'phrasewall'), [
-            'maxlength' => (int) $phrasewall->maxchars,
-            'size' => min(80, (int) $phrasewall->maxchars),
+            'maxlength' => (int)$phrasewall->maxchars,
+            'size' => min(80, (int)$phrasewall->maxchars),
             'placeholder' => get_string('phraseplaceholder', 'phrasewall'),
             'autocomplete' => 'off',
         ]);
@@ -81,11 +84,11 @@ class post_form extends \moodleform {
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         $phrasewall = $this->_customdata['phrasewall'];
-        $message = trim((string) ($data['message'] ?? ''));
+        $message = trim((string)($data['message'] ?? ''));
 
         if ($message === '') {
             $errors['message'] = get_string('errorempty', 'phrasewall');
-        } else if (\core_text::strlen($message) > (int) $phrasewall->maxchars) {
+        } else if (core_text::strlen($message) > (int)$phrasewall->maxchars) {
             $errors['message'] = get_string('errormaxchars', 'phrasewall', $phrasewall->maxchars);
         }
 

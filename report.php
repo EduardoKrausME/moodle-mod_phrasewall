@@ -22,6 +22,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\notification;
+
 require('../../config.php');
 require_once($CFG->libdir . '/tablelib.php');
 
@@ -66,7 +68,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('report', 'phrasewall'));
 
 if (!empty($phrasewall->anonymous)) {
-    echo $OUTPUT->notification(get_string('reportanonymousnotice', 'phrasewall'), \core\output\notification::NOTIFY_INFO);
+    echo $OUTPUT->notification(get_string('reportanonymousnotice', 'phrasewall'), notification::NOTIFY_INFO);
 }
 
 foreach ($posts as $post) {

@@ -24,10 +24,13 @@
 
 namespace mod_phrasewall\event;
 
+use core\event\base;
+use moodle_url;
+
 /**
  * Event fired after a student creates or updates a sentence.
  */
-class post_submitted extends \core\event\base {
+class post_submitted extends base {
 
     /**
      * Initializes event data.
@@ -62,9 +65,9 @@ class post_submitted extends \core\event\base {
     /**
      * Returns the related activity URL.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
+        return new moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
     }
 }

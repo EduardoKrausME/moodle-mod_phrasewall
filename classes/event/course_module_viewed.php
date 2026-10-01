@@ -24,6 +24,8 @@
 
 namespace mod_phrasewall\event;
 
+use moodle_url;
+
 /**
  * Event fired when the wall is viewed.
  */
@@ -51,9 +53,9 @@ class course_module_viewed extends \core\event\course_module_viewed {
     /**
      * Returns the object URL.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
+        return new moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
     }
 }

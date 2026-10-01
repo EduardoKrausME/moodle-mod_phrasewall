@@ -22,6 +22,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\notification;
+use mod_phrasewall\event\course_module_viewed;
+use mod_phrasewall\form\post_form;
+use mod_phrasewall\manager;
+
 require('../../config.php');
 
 $id = required_param('id', PARAM_INT);
@@ -39,20 +44,20 @@ $PAGE->set_title(format_string($phrasewall->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-$event = \mod_phrasewall\event\course_module_viewed::create([
+$event = course_module_viewed::create([
     'objectid' => $phrasewall->id,
     'context' => $context,
 ]);
 $event->add_record_snapshot('phrasewall', $phrasewall);
 $event->trigger();
 
-$manager = new \mod_phrasewall\manager($phrasewall, $cm, $course, $context);
+$manager = new manager($phrasewall, $cm, $course, $context);
 $currentpost = $manager->get_user_post($USER->id);
 $canpost = has_capability('mod/phrasewall:submit', $context);
 $caneditpost = !$currentpost || !empty($phrasewall->allowedit);
 
 if ($canpost && $caneditpost) {
-    $form = new \mod_phrasewall\form\post_form(null, [
+    $form = new post_form(null, [
         'cmid' => $cm->id,
         'phrasewall' => $phrasewall,
         'post' => $currentpost,
@@ -64,7 +69,7 @@ if ($canpost && $caneditpost) {
             new moodle_url('/mod/phrasewall/view.php', ['id' => $cm->id]),
             get_string('postsaved', 'phrasewall'),
             null,
-            \core\output\notification::NOTIFY_SUCCESS
+            notification::NOTIFY_SUCCESS
         );
     }
 }
@@ -74,7 +79,7 @@ $templateposts = [];
 $showauthors = empty($phrasewall->anonymous);
 foreach ($posts as $post) {
     $author = $showauthors ? fullname($post) : get_string('anonymousauthor', 'phrasewall');
-    $initial = $showauthors ? \core_text::strtoupper(\core_text::substr($author, 0, 1)) : '?';
+    $initial = $showauthors ? core_text::strtoupper(core_text::substr($author, 0, 1)) : '?';
     $templateposts[] = [
         'message' => $post->message,
         'author' => $author,
@@ -108,7 +113,7 @@ if (!empty($phrasewall->intro)) {
 
 if ($canpost) {
     if (!$caneditpost) {
-        echo $OUTPUT->notification(get_string('cannotedit', 'phrasewall'), \core\output\notification::NOTIFY_INFO);
+        echo $OUTPUT->notification(get_string('cannotedit', 'phrasewall'), notification::NOTIFY_INFO);
     } else {
         $form->display();
     }

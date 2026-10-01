@@ -24,30 +24,39 @@
 
 namespace mod_phrasewall;
 
+use cm_info;
+use completion_info;
+use context_module;
+use core_text;
+use core_user\fields;
+use mod_phrasewall\event\post_submitted;
+use moodle_exception;
+use stdClass;
+
 /**
  * Handles posts and completion state for one activity instance.
  */
 class manager {
 
-    /** @var \stdClass Activity record. */
+    /** @var stdClass Activity record. */
     private $phrasewall;
 
-    /** @var \cm_info|\stdClass Course module. */
+    /** @var cm_info|stdClass Course module. */
     private $cm;
 
-    /** @var \stdClass Course record. */
+    /** @var stdClass Course record. */
     private $course;
 
-    /** @var \context_module Module context. */
+    /** @var context_module Module context. */
     private $context;
 
     /**
      * Constructor.
      *
-     * @param \stdClass $phrasewall Activity record.
-     * @param \cm_info|\stdClass $cm Course module.
-     * @param \stdClass $course Course record.
-     * @param \context_module $context Module context.
+     * @param stdClass $phrasewall Activity record.
+     * @param cm_info|stdClass $cm Course module.
+     * @param stdClass $course Course record.
+     * @param context_module $context Module context.
      */
     public function __construct($phrasewall, $cm, $course, $context) {
         $this->phrasewall = $phrasewall;
@@ -60,7 +69,7 @@ class manager {
      * Returns a user's existing post.
      *
      * @param int $userid User ID.
-     * @return \stdClass|false
+     * @return stdClass|false
      */
     public function get_user_post(int $userid) {
         global $DB;
@@ -85,10 +94,10 @@ class manager {
 
         $message = trim(clean_param($message, PARAM_TEXT));
         if ($message === '') {
-            throw new \moodle_exception('errorempty', 'phrasewall');
+            throw new moodle_exception('errorempty', 'phrasewall');
         }
-        if (\core_text::strlen($message) > (int) $this->phrasewall->maxchars) {
-            throw new \moodle_exception('errormaxchars', 'phrasewall', '', $this->phrasewall->maxchars);
+        if (core_text::strlen($message) > (int)$this->phrasewall->maxchars) {
+            throw new moodle_exception('errormaxchars', 'phrasewall', '', $this->phrasewall->maxchars);
         }
 
         $existing = $this->get_user_post($userid);
@@ -96,14 +105,14 @@ class manager {
 
         if ($existing) {
             if (empty($this->phrasewall->allowedit)) {
-                throw new \moodle_exception('cannotedit', 'phrasewall');
+                throw new moodle_exception('cannotedit', 'phrasewall');
             }
             $existing->message = $message;
             $existing->timemodified = $now;
             $DB->update_record('phrasewall_posts', $existing);
-            $postid = (int) $existing->id;
+            $postid = (int)$existing->id;
         } else {
-            $post = (object) [
+            $post = (object)[
                 'phrasewallid' => $this->phrasewall->id,
                 'userid' => $userid,
                 'message' => $message,
@@ -113,7 +122,7 @@ class manager {
             $postid = $DB->insert_record('phrasewall_posts', $post);
         }
 
-        $event = \mod_phrasewall\event\post_submitted::create([
+        $event = post_submitted::create([
             'objectid' => $postid,
             'context' => $this->context,
             'relateduserid' => $userid,
@@ -133,7 +142,7 @@ class manager {
     public function get_wall_posts(): array {
         global $DB;
 
-        $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', true)->selects;
+        $namefields = fields::for_name()->get_sql('u', false, '', '', true)->selects;
         $sql = "SELECT p.id, p.userid, p.message, p.timecreated, p.timemodified {$namefields}
                   FROM {phrasewall_posts} p
                   JOIN {user} u ON u.id = p.userid
@@ -159,7 +168,7 @@ class manager {
         ], '*', MUST_EXIST);
 
         $DB->delete_records('phrasewall_posts', ['id' => $post->id]);
-        $this->refresh_completion((int) $post->userid);
+        $this->refresh_completion((int)$post->userid);
     }
 
     /**
@@ -169,7 +178,7 @@ class manager {
      * @return void
      */
     private function refresh_completion(int $userid): void {
-        $completion = new \completion_info($this->course);
+        $completion = new completion_info($this->course);
         if (!$completion->is_enabled($this->cm)) {
             return;
         }

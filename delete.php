@@ -22,6 +22,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\notification;
+use mod_phrasewall\manager;
+
 require('../../config.php');
 
 $id = required_param('id', PARAM_INT);
@@ -45,13 +48,13 @@ $reporturl = new moodle_url('/mod/phrasewall/report.php', ['id' => $cm->id]);
 
 if ($confirm) {
     require_sesskey();
-    $manager = new \mod_phrasewall\manager($phrasewall, $cm, $course, $context);
+    $manager = new manager($phrasewall, $cm, $course, $context);
     $manager->delete_post($post->id);
     redirect(
         $reporturl,
         get_string('postdeleted', 'phrasewall'),
         null,
-        \core\output\notification::NOTIFY_SUCCESS
+        notification::NOTIFY_SUCCESS
     );
 }
 

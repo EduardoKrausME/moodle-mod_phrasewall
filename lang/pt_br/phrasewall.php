@@ -22,7 +22,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 $string['actions'] = 'Ações';
 $string['allowedit'] = 'Permitir que o estudante edite sua frase';
@@ -41,11 +41,6 @@ $string['errorempty'] = 'Escreva uma frase antes de enviar.';
 $string['errormaxchars'] = 'A frase deve ter no máximo {$a} caracteres.';
 $string['eventcoursemoduleviewed'] = 'Mural de uma frase visualizado';
 $string['eventpostsubmitted'] = 'Frase publicada no mural';
-$string['phrasewall:addinstance'] = 'Adicionar um novo Mural de uma frase';
-$string['phrasewall:manageposts'] = 'Excluir respostas dos estudantes';
-$string['phrasewall:submit'] = 'Publicar uma frase';
-$string['phrasewall:view'] = 'Visualizar o Mural de uma frase';
-$string['phrasewall:viewreport'] = 'Visualizar o relatório e a autoria das respostas';
 $string['maxchars'] = 'Tamanho máximo da frase';
 $string['maxchars_help'] = 'Quantidade máxima de caracteres permitida na resposta de cada estudante.';
 $string['modified'] = 'Última alteração';
@@ -58,13 +53,18 @@ $string['noresponsesdescription'] = 'As primeiras frases aparecerão aqui assim 
 $string['participant'] = 'Participante';
 $string['phrase'] = 'Frase';
 $string['phraseplaceholder'] = 'Escreva uma frase curta…';
+$string['phrasewall:addinstance'] = 'Adicionar um novo Mural de uma frase';
+$string['phrasewall:manageposts'] = 'Excluir respostas dos estudantes';
+$string['phrasewall:submit'] = 'Publicar uma frase';
+$string['phrasewall:view'] = 'Visualizar o Mural de uma frase';
+$string['phrasewall:viewreport'] = 'Visualizar o relatório e a autoria das respostas';
 $string['pluginadministration'] = 'Administração do Mural de uma frase';
 $string['pluginname'] = 'Mural de uma frase';
 $string['postdeleted'] = 'A resposta foi excluída.';
 $string['postsaved'] = 'Sua frase foi salva.';
 $string['privacy:metadata:phrasewall_posts'] = 'Armazena a frase publicada por cada participante.';
-$string['privacy:metadata:phrasewall_posts:phrasewallid'] = 'A atividade Mural de uma frase que recebeu a resposta.';
 $string['privacy:metadata:phrasewall_posts:message'] = 'A frase publicada pelo usuário.';
+$string['privacy:metadata:phrasewall_posts:phrasewallid'] = 'A atividade Mural de uma frase que recebeu a resposta.';
 $string['privacy:metadata:phrasewall_posts:timecreated'] = 'Data e hora em que a frase foi publicada pela primeira vez.';
 $string['privacy:metadata:phrasewall_posts:timemodified'] = 'Data e hora da última alteração da frase.';
 $string['privacy:metadata:phrasewall_posts:userid'] = 'O usuário que publicou a frase.';

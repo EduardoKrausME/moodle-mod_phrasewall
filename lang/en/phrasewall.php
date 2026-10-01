@@ -22,7 +22,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
 $string['actions'] = 'Actions';
 $string['allowedit'] = 'Allow students to edit their sentence';
@@ -41,11 +41,6 @@ $string['errorempty'] = 'Write a sentence before submitting.';
 $string['errormaxchars'] = 'The sentence must contain no more than {$a} characters.';
 $string['eventcoursemoduleviewed'] = 'Feedback wall viewed';
 $string['eventpostsubmitted'] = 'Feedback wall sentence submitted';
-$string['phrasewall:addinstance'] = 'Add a new Feedback wall';
-$string['phrasewall:manageposts'] = 'Delete student responses';
-$string['phrasewall:submit'] = 'Submit a sentence';
-$string['phrasewall:view'] = 'View Feedback wall';
-$string['phrasewall:viewreport'] = 'View the response report and author identities';
 $string['maxchars'] = 'Maximum sentence length';
 $string['maxchars_help'] = 'Maximum number of characters allowed in each student response.';
 $string['modified'] = 'Last modified';
@@ -58,13 +53,18 @@ $string['noresponsesdescription'] = 'The first sentences will appear here as soo
 $string['participant'] = 'Participant';
 $string['phrase'] = 'Sentence';
 $string['phraseplaceholder'] = 'Write one short sentence…';
+$string['phrasewall:addinstance'] = 'Add a new Feedback wall';
+$string['phrasewall:manageposts'] = 'Delete student responses';
+$string['phrasewall:submit'] = 'Submit a sentence';
+$string['phrasewall:view'] = 'View Feedback wall';
+$string['phrasewall:viewreport'] = 'View the response report and author identities';
 $string['pluginadministration'] = 'Feedback wall administration';
 $string['pluginname'] = 'Feedback wall';
 $string['postdeleted'] = 'The response has been deleted.';
 $string['postsaved'] = 'Your sentence has been saved.';
 $string['privacy:metadata:phrasewall_posts'] = 'Stores the sentence submitted by each participant.';
-$string['privacy:metadata:phrasewall_posts:phrasewallid'] = 'The Feedback wall activity receiving the sentence.';
 $string['privacy:metadata:phrasewall_posts:message'] = 'The sentence submitted by the user.';
+$string['privacy:metadata:phrasewall_posts:phrasewallid'] = 'The Feedback wall activity receiving the sentence.';
 $string['privacy:metadata:phrasewall_posts:timecreated'] = 'The time the sentence was first submitted.';
 $string['privacy:metadata:phrasewall_posts:timemodified'] = 'The time the sentence was last updated.';
 $string['privacy:metadata:phrasewall_posts:userid'] = 'The user who submitted the sentence.';
