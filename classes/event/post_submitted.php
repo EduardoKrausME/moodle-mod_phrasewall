@@ -70,4 +70,24 @@ class post_submitted extends base {
     public function get_url() {
         return new moodle_url('/mod/phrasewall/view.php', ['id' => $this->contextinstanceid]);
     }
+
+    /**
+     * Defines the restore mapping for the event object.
+     *
+     * @return array
+     */
+    public static function get_objectid_mapping() {
+        return ['db' => 'phrasewall_posts', 'restore' => 'phrasewall_post'];
+    }
+
+    /**
+     * Defines restore mappings for values stored in other.
+     *
+     * @return array
+     */
+    public static function get_other_mapping() {
+        return [
+            'phrasewallid' => ['db' => 'phrasewall', 'restore' => 'phrasewall'],
+        ];
+    }
 }
