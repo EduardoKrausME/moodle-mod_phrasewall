@@ -22,6 +22,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die;
+
+require_once($CFG->dirroot . '/mod/phrasewall/backup/moodle2/restore_phrasewall_stepslib.php');
+
 /**
  * Defines the restore task.
  */
@@ -64,6 +68,7 @@ class restore_phrasewall_activity_task extends restore_activity_task {
             new restore_decode_rule('PHRASEWALLINDEX', '/mod/phrasewall/index.php?id=$1', 'course'),
         ];
     }
+
     /**
      * Defines restore log rules.
      *
@@ -72,5 +77,4 @@ class restore_phrasewall_activity_task extends restore_activity_task {
     public static function define_restore_log_rules() {
         return [];
     }
-
 }
