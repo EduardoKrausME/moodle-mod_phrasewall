@@ -64,11 +64,14 @@ class restore_phrasewall_activity_structure_step extends restore_activity_struct
         global $DB;
 
         $data = (object)$data;
+        $oldid = $data->id;
         $data->phrasewallid = $this->get_new_parentid('phrasewall');
         $data->userid = $this->get_mappingid('user', $data->userid);
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
-        $DB->insert_record('phrasewall_posts', $data);
+
+        $newitemid = $DB->insert_record('phrasewall_posts', $data);
+        $this->set_mapping('phrasewall_post', $oldid, $newitemid);
     }
 
     /**
