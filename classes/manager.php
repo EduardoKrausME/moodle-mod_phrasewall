@@ -27,7 +27,6 @@ namespace mod_phrasewall;
 use cm_info;
 use completion_info;
 use context_module;
-use core_text;
 use core_user\fields;
 use mod_phrasewall\event\post_submitted;
 use moodle_exception;
@@ -96,7 +95,7 @@ class manager {
         if ($message === '') {
             throw new moodle_exception('errorempty', 'phrasewall');
         }
-        if (core_text::strlen($message) > (int)$this->phrasewall->maxchars) {
+        if (strlen($message) > (int)$this->phrasewall->maxchars) {
             throw new moodle_exception('errormaxchars', 'phrasewall', '', $this->phrasewall->maxchars);
         }
 

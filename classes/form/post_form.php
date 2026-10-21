@@ -24,7 +24,6 @@
 
 namespace mod_phrasewall\form;
 
-use core_text;
 use moodleform;
 
 defined('MOODLE_INTERNAL') || die;
@@ -88,7 +87,7 @@ class post_form extends moodleform {
 
         if ($message === '') {
             $errors['message'] = get_string('errorempty', 'phrasewall');
-        } else if (core_text::strlen($message) > (int)$phrasewall->maxchars) {
+        } else if (strlen($message) > (int)$phrasewall->maxchars) {
             $errors['message'] = get_string('errormaxchars', 'phrasewall', $phrasewall->maxchars);
         }
 

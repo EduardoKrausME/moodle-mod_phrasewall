@@ -79,7 +79,7 @@ $templateposts = [];
 $showauthors = empty($phrasewall->anonymous);
 foreach ($posts as $post) {
     $author = $showauthors ? fullname($post) : get_string('anonymousauthor', 'phrasewall');
-    $initial = $showauthors ? core_text::strtoupper(core_text::substr($author, 0, 1)) : '?';
+    $initial = $showauthors ? strtoupper(substr($author, 0, 1)) : '?';
     $templateposts[] = [
         'message' => $post->message,
         'author' => $author,
